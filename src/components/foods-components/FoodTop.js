@@ -10,20 +10,27 @@ import {
   Dimensions,
 } from "react-native";
 import {
+  ArchiveBoxIcon,
+  InboxIcon,
   LockClosedIcon,
   MagnifyingGlassCircleIcon,
   XMarkIcon,
 } from "react-native-heroicons/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
 import COLORS from "../../core/colors";
+import { useSelector } from "react-redux";
+import { useNavigation } from "@react-navigation/native";
 
-export default function SearchArea() {
+export default function FoodTop() {
   const [search, setSearch] = useState("");
   const [datas, setDatas] = useState([]);
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const selectedNutritionsLength = useSelector(state => state.selectedNutritions.items.length)
+  const navigation = useNavigation();
 
   const getSearchedDatas = () => {
     if (search === "") return;
@@ -55,10 +62,12 @@ export default function SearchArea() {
 
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
-      <Image
-        source={require("../../../assets/logo.png")}
-        style={{ width: 60, height: 60 }}
-      />
+      <View className="flex-row items-end">
+        <ArchiveBoxIcon onPress={() => navigation.navigate("CreateMeal")} height="45" width="45" />
+        <View className="flex-row items-center justify-center absolute left-7 bg-red-600 w-6 h-6 rounded-full">
+          <Text className="font-bold  text-white">{selectedNutritionsLength}</Text>
+        </View>
+      </View>
       <Text className="text-3xl font-bold">Nutritions</Text>
       <MagnifyingGlassCircleIcon
         onPress={() => setModal(true)}

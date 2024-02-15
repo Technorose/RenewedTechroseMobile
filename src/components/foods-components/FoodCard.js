@@ -3,9 +3,17 @@ import COLORS from "../../core/colors";
 import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
+import { useDispatch } from "react-redux";
+import { addToBasket } from "../../../slices/selectedNutritionsSlice";
 
 export default function FoodCard() {
     const [nutritionsList, setNutritionsList] = useState([])
+
+    const dispatch = useDispatch();
+
+    const handleDispatch = e => {
+      dispatch(addToBasket(e))
+    }
 
     useEffect(() => {
       ApiService.getNutritionsList()
@@ -63,7 +71,7 @@ export default function FoodCard() {
                         <Text className="text-green-700">{item.serving_size}</Text>
                     </Text>
                     <TouchableOpacity>
-                          <Text className="font-semibold text-yellow-500">+ Add</Text>
+                          <Text className="font-semibold text-yellow-500" onPress={handleDispatch}>+ Add</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
