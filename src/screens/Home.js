@@ -1,0 +1,36 @@
+import { View, Text, TouchableOpacity, ScrollView } from "react-native";
+import FoodCard from "../components/foods-components/FoodCard";
+import FoodCategories from "../components/foods-components/FoodCategories";
+import SearchField from "../components/foods-components/SearchField";
+import LessCaloriesFood from "../components/foods-components/LessCaloriesFood";
+
+export default function Home() {
+    return (
+        <View className="mt-14">
+            <ScrollView>
+                <SearchField />
+                <FoodCategories />
+                <View className="flex-row justify-between p-2 mb-4 mt-3 items-center">
+                    <View className="flex-column ml-3">
+                        <Text className="text-2xl font-bold">Nutritions</Text>
+                        <Text className="text-gray-500">Choose your nutrition</Text>
+                    </View>
+                    <TouchableOpacity>
+                    <Text className="font-bold text-yellow-500">See All</Text>
+                    </TouchableOpacity>
+                </View>
+                <FoodCard />
+                <View className="flex-row justify-between p-2 mb-4 mt-3 items-center">
+                    <View className="flex-column ml-3">
+                        <Text className="text-2xl font-bold">Less Calories Nutritions</Text>
+                        <Text className="text-gray-500">Choose your nutrition</Text>
+                    </View>
+                    <TouchableOpacity>
+                    <Text className="font-bold text-yellow-500">See All</Text>
+                    </TouchableOpacity>
+                </View>
+                <LessCaloriesFood />
+            </ScrollView>
+        </View>
+    )
+}
