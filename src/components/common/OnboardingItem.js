@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
 
     description: {
         fontWeight: '300',
-        color: '#62656b',
+        color: 'white',
         textAlign: 'center',
         paddingHorizontal: 64
     },

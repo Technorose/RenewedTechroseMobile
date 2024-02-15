@@ -5,7 +5,7 @@ import COLORS from '../core/colors';
 import { themeColors } from '../../theme';
 import { useNavigation } from '@react-navigation/native';
 
-const Welcome = () => {
+export default function Welcome() {
 
     const navigation = useNavigation();
 
@@ -68,5 +68,3 @@ const Welcome = () => {
         </LinearGradient>
     )
 }
-
-export default Welcome

@@ -1,15 +1,18 @@
 import { View, Text, TouchableOpacity, ScrollView } from "react-native";
 import FoodCard from "../components/foods-components/FoodCard";
 import FoodCategories from "../components/foods-components/FoodCategories";
-import SearchField from "../components/foods-components/SearchField";
+import SearchArea from "../components/foods-components/SearchField";
 import LessCaloriesFood from "../components/foods-components/LessCaloriesFood";
 
 export default function Home() {
     return (
         <View className="mt-14">
             <ScrollView>
-                <SearchField />
-                <FoodCategories />
+                <SearchArea />
+                <View className="flex-column">
+                    <Text className="text-gray-500 p-2 ml-3">Categories</Text>
+                    <FoodCategories />
+                </View>
                 <View className="flex-row justify-between p-2 mb-4 mt-3 items-center">
                     <View className="flex-column ml-3">
                         <Text className="text-2xl font-bold">Nutritions</Text>
