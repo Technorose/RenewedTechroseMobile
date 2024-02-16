@@ -6,8 +6,11 @@ import Toast from "react-native-toast-message";
 import { useDispatch } from "react-redux";
 import { addToBasket } from "../../../slices/selectedNutritionsSlice";
 
-export default function FoodCard() {
+export default function FoodCard({
+  choosedCategory
+}) {
     const [nutritionsList, setNutritionsList] = useState([])
+    const [loading, setLoading] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -16,19 +19,35 @@ export default function FoodCard() {
     }
 
     useEffect(() => {
-      ApiService.getNutritionsList()
-          .then((data) => {
-              if(data.result.success === true) {
-                  setNutritionsList(data.nutritions)
-              } else {
-                  Toast.show({
-                      type: 'error',
-                      text1: 'Error!',
-                      text2: 'Something went wrong!',
-                  })
-              }
-          })
-    }, [])
+      setLoading(true)
+      if(choosedCategory === 0) {
+        ApiService.getNutritionsList()
+            .then((data) => {
+                if(data.result.success === true) {
+                    setNutritionsList(data.nutritions)
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error!',
+                        text2: 'Something went wrong!',
+                    })
+                }
+            }).finally(() => setLoading(false))
+      } else {
+        ApiService.getNutritionsByNutritionType(choosedCategory)
+            .then((data) => {
+                if(data.result.success === true) {
+                    setNutritionsList(data.nutritions)
+                } else {
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error!',
+                        text2: 'Something went wrong!',
+                    })
+                }
+            }).finally(() => setLoading(false))
+      }
+    }, [choosedCategory])
 
     return (
       <View>
@@ -38,7 +57,7 @@ export default function FoodCard() {
           className="overflow-visible"
           contentContainerStyle={{paddingHorizontal: 15}}
         >
-          {nutritionsList.length > 0 ? (
+          {(!loading && nutritionsList.length > 0) ? (
             nutritionsList.map((item) => {
               return (
                 <View style={{shadowColor: COLORS.grey, shadowRadius: 7}} className="mr-6 bg-white rounded-3xl shadow-lg">

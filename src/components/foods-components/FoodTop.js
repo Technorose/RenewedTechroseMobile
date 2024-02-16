@@ -20,14 +20,17 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
 import COLORS from "../../core/colors";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
+import { addToBasket } from "../../../slices/selectedNutritionsSlice";
 
 export default function FoodTop() {
   const [search, setSearch] = useState("");
   const [datas, setDatas] = useState([]);
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const dispatch = useDispatch();
 
   const navigation = useNavigation();
 
@@ -64,6 +67,10 @@ export default function FoodTop() {
   const handleMealCreate = () => {
     console.log("Create meal");
     navigation.navigate("CreateMeal");
+  }
+
+  const handleAdd = (item) => {
+    dispatch(addToBasket(item))
   }
 
   return (
@@ -172,7 +179,7 @@ export default function FoodTop() {
                                 {item.serving_size}
                               </Text>
                             </Text>
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={() => handleAdd(item)}>
                               <Text className="font-semibold text-yellow-500">
                                 + Add
                               </Text>

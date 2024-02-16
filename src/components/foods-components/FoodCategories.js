@@ -4,8 +4,12 @@ import ApiService from '../../service/ApiService'
 import Toast from 'react-native-toast-message'
 import COLORS from '../../core/colors'
 
-export default function FoodCategories() {
+export default function FoodCategories({
+  choosedCategory,
+  setChoosedCategory,
+}) {
   const [nutritionTypeList, setNutritionTypeList] = useState([])
+  
 
   useEffect(() => {
     ApiService.getNutritionTypeList()
@@ -22,6 +26,7 @@ export default function FoodCategories() {
       })
   }, [])
 
+
   return (
     <View className="mt-4">
       <ScrollView
@@ -33,8 +38,8 @@ export default function FoodCategories() {
         {nutritionTypeList.length > 0 ? (
           nutritionTypeList.map((item) => {
             return (
-              <View key={item.id} className="mr-7">
-                <TouchableOpacity className="flex-column justify-center items-center ">
+              <View key={item.id} className="mr-7" style={{ borderBottomWidth: item.id === choosedCategory ? '2px' : '0px', borderColor: COLORS.primary }}>
+                <TouchableOpacity onPress={() => setChoosedCategory(item.id)} className="flex-column justify-center items-center ">
                   <Image className="p-2 rounded-full shadow" style={{width: 45, height: 45}} src={item.image} />
                   <Text className="text-sm font-bold">{item.nutrition_type_name}</Text>
                 </TouchableOpacity>

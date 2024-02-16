@@ -119,4 +119,24 @@ export default class ApiService {
 
         return returnData;
     }
+
+    static async getNutritionsByNutritionType(nutritionTypeId, limit = 10, offset = 0) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'NutritionListByNutritionType?nutrition_type_id=' + nutritionTypeId + '&limit=' + limit + '&offset=' + offset, {
+            method: 'GET',
+            headers: header,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
 }
