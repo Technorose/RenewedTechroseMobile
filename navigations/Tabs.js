@@ -2,7 +2,8 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../src/screens/Home";
 import { StyleSheet, Text, View } from "react-native";
-import { HomeIcon } from "react-native-heroicons/solid";
+import { HomeIcon, PhotoIcon } from "react-native-heroicons/solid";
+import ProfileScreen from "../src/screens/Profile";
 
 const Tab = createBottomTabNavigator();
 
@@ -33,6 +34,18 @@ const Tabs = () => {
           tabBarIcon: ({ focused, color, size }) => (
             <View>
               <HomeIcon />
+            </View>
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: false, // Fix the assignment here
+          tabBarIcon: ({ focused, color, size }) => (
+            <View>
+              <PhotoIcon />
             </View>
           ),
         }}
