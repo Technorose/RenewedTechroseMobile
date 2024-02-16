@@ -3,8 +3,8 @@ import { View, Text, StatusBar, StyleSheet, ScrollView, TouchableOpacity, Image 
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { googleImageUrl } from "../core/statics";
-import COLORS from "../core/colors";
+import { googleImageUrl } from "../../core/statics";
+import COLORS from "../../core/colors";
 
 const ProfileScreen = () => {
   const [user, setUser] = useState({});
@@ -48,7 +48,7 @@ const ProfileScreen = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.settingsContainer}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("ProfileUpdate")}>
               <MaterialIcons name="settings" size={24} color="white" />
             </TouchableOpacity>
           </View>
