@@ -11,8 +11,8 @@ export default function FoodCard() {
 
     const dispatch = useDispatch();
 
-    const handleDispatch = e => {
-      dispatch(addToBasket(e))
+    const handleDispatch = item => {
+      dispatch(addToBasket(item))
     }
 
     useEffect(() => {
@@ -70,8 +70,8 @@ export default function FoodCard() {
                         <Text className="text-gray-700 ml-4">Serving Size: </Text>
                         <Text className="text-green-700">{item.serving_size}</Text>
                     </Text>
-                    <TouchableOpacity>
-                          <Text className="font-semibold text-yellow-500" onPress={handleDispatch}>+ Add</Text>
+                    <TouchableOpacity onPress={() => handleDispatch(item)}>
+                        <Text className="font-semibold text-yellow-500">+ Add</Text>
                     </TouchableOpacity>
                   </View>
                 </View>

@@ -19,7 +19,7 @@ export default function AppNavigation() {
                 <Stack.Screen name="Login" options={{headerShown: false}} component={Login}></Stack.Screen>
                 <Stack.Screen name="Register" options={{headerShown: false}} component={Register}></Stack.Screen>
                 <Stack.Screen name="Main" options={{headerShown: false}} component={Tabs}></Stack.Screen>
-                <Stack.Screen name="CreateMeal" options={{headerShown: false}} component={CreateMeal}></Stack.Screen>
+                <Stack.Screen name="CreateMeal" options={{headerShown: false, presentation: 'modal'}} component={CreateMeal}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     )

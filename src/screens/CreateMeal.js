@@ -1,12 +1,12 @@
 import {
   View,
   Text,
-  StatusBar,
+  Modal,
   TouchableOpacity,
   Image,
   ScrollView,
 } from "react-native";
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeFromBasket,
@@ -14,129 +14,158 @@ import {
   selectBasketTotal,
 } from "../../slices/selectedNutritionsSlice";
 import { useNavigation } from "@react-navigation/native";
-import * as Icon from "react-native-feather";
+import { MinusIcon } from "react-native-heroicons/solid";
+import COLORS from "../core/colors";
+import ApiService from "../service/ApiService";
+import { themeColors } from "../../theme";
 
 export default function CreateMeal() {
   const [groupedItems, setGroupedItems] = useState([]);
-  const basketItems = useSelector(selectBasketItems);
+  const basketItems = useSelector(state => state.selectedNutritions.items);
   const basketTotal = useSelector(selectBasketTotal);
+
+  const totalCalorie = basketItems.reduce((total, item) => total += item.calorie, 0);
+  const totalSugar = basketItems.reduce((total, item) => total += item.sugar, 0);
+  const totalCarbohydrate = basketItems.reduce((total, item) => total += item.carbo_hydrate, 0);
+
+  const [selectedId, setSelectedId] = useState(0); 
+
+  const [meals, setMeals] = useState([]);
 
   const dispatch = useDispatch();
   const navigation = useNavigation();
-  const deliveryFee = 2;
+
+  useEffect(() => {
+    ApiService.getMealNamesCodes()
+      .then((data) => {
+        if (data.result.success === true) {
+          setMeals(data.meal_names_codes);
+        }
+      })
+  }, [])
+
+  const handleMeal = (item) => () => {
+    setSelectedId(item.id);
+  }
+
+  const handleDelete = (item) => {
+    dispatch(removeFromBasket(item));
+  }
+
   useMemo(() => {
-    const gItems = basketItems.reduce((group, item) => {
-      if (group[item.id]) {
-        group[item.id].push(item);
-      } else {
-        group[item.id] = [item];
-      }
-      return group;
-    }, {});
-    setGroupedItems(gItems);
-  }, [basketItems]);
+    setGroupedItems(basketItems)
+  }, [basketItems])
 
   return (
     <View className=" bg-white flex-1">
-      {/* top button */}
-      <View className="relative py-4 shadow-sm">
-        <TouchableOpacity
-          onPress={navigation.goBack}
-          className="absolute z-10 rounded-full p-1 shadow top-5 left-2"
+      <View className="flex-row py-10 justify-between px-7 items-center">
+        <Text className="font-regular">Choosed nutritions</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Home")}>
+          <Text className="font-bold">Add more...</Text>
+        </TouchableOpacity>
+      </View>
+
+      <View style={{flex:1}}>
+        <ScrollView
+          showsVerticalScrollIndicator={true}
+          className="bg-white pt-5"
+          style={{
+            paddingHorizontal: 10,
+          }}
         >
-          <Icon.ArrowLeft strokeWidth={3} stroke="white" />
-        </TouchableOpacity>
-        <View>
-          <Text className="text-center font-bold text-xl">Your cart</Text>
-          <Text className="text-center text-gray-500">{resturant.title}</Text>
-        </View>
-      </View>
-
-      {/* delivery time */}
-      <View
-        className="flex-row px-4 items-center"
-      >
-        <Image
-          source={require("../../assets/logo.png")}
-          className="w-20 h-20 rounded-full"
-        />
-        <Text className="flex-1 pl-4">Deliver in 20-30 minutes</Text>
-        <TouchableOpacity>
-          <Text className="font-bold">
-            Change
-          </Text>
-        </TouchableOpacity>
-      </View>
-
-      {/* dishes */}
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        className="bg-white pt-5"
-        contentContainerStyle={{
-          paddingBottom: 50,
-        }}
-      >
-        {groupedItems.map((item) => {
-          return (
-            <View
-              key={key}
-              className="flex-row items-center space-x-3 py-2 px-4 bg-white rounded-3xl mx-2 mb-3 shadow-md"
-            >
-              <Text  className="font-bold">
-                {item.length} x{" "}
-              </Text>
-              <Image
-                className="h-14 w-14 rounded-full"
-                src={item.image}
-              />
-              <Text className="flex-1 font-bold text-gray-700">
-                {item.name}
-              </Text>
-              <Text className="font-semibold text-base">
-                ${item.calorie}
-              </Text>
-              <TouchableOpacity
-                className="p-1 rounded-full"
-                onPress={() => dispatch(removeFromBasket({ id: item.id }))}
-              >
-                <Icon.Minus
-                  strokeWidth={2}
-                  height={20}
-                  width={20}
-                  stroke="white"
-                />
-              </TouchableOpacity>
+          {groupedItems.length > 0 ? (
+            <View>
+              {groupedItems?.map((item) => {
+                return (
+                  <View
+                    key={item.key}
+                    className="flex-row items-center space-x-3 py-2 px-4 bg-white rounded-3xl mx-2 mb-3 shadow-md"
+                  >
+                    <TouchableOpacity className="p-2" onPress={() => handleDelete(item)}>
+                        <MinusIcon
+                          strokeWidth={2}
+                          height={20}
+                          width={20}
+                          stroke="black"
+                        />
+                    </TouchableOpacity>
+                    <Image className="h-14 w-14 rounded-full" src={item.image} />
+                    <Text className="flex-1 font-bold text-gray-700">
+                      {item.name}
+                    </Text>
+                    <Text className="font-semibold text-base">
+                      {item.calorie}
+                    </Text>
+                    <TouchableOpacity
+                      className="p-1 rounded-full"
+                      onPress={() => dispatch(removeFromBasket({ id: item.id }))}
+                    >
+                      <MinusIcon
+                        strokeWidth={2}
+                        height={20}
+                        width={20}
+                        stroke="white"
+                      />
+                    </TouchableOpacity>
+                  </View>
+                );
+              })}
             </View>
-          );
-        })}
-      </ScrollView>
-      {/* totals */}
-      <View
-        
-        className=" p-6 px-8 rounded-t-3xl space-y-4"
-      >
-        <View className="flex-row justify-between">
-          <Text className="text-gray-700">Subtotal</Text>
-          <Text className="text-gray-700">${basketTotal}</Text>
-        </View>
-        <View className="flex-row justify-between">
-          <Text className="text-gray-700">Delivery Fee</Text>
-          <Text className="text-gray-700">${deliveryFee}</Text>
-        </View>
-        <View className="flex-row justify-between">
-          <Text className="font-extrabold">Order Total</Text>
-          <Text className="font-extrabold">${basketTotal + deliveryFee}</Text>
-        </View>
-        <View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("PreparingOrder")}
-            className="p-3 rounded-full"
-          >
-            <Text className="text-white text-center font-bold text-lg">
-              Place Order
-            </Text>
-          </TouchableOpacity>
-        </View>
+          ) : (
+            <Text className="text-center">No items...</Text>
+          )}
+        </ScrollView>
+      </View>
+      <View 
+        style={{borderTopLeftRadius: 50, borderTopRightRadius: 50, backgroundColor: COLORS.primary}} 
+        className="flex-1 px-6">
+        <View className="p-6 px-5 rounded-3xl space-y-8" >
+          <View className="flex-row justify-between">
+            <Text className="text-white font-bold">Total Calorie</Text>
+            <Text className="text-gray-300">{totalCalorie}</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-white font-bold">Total Sugar</Text>
+            <Text className="text-gray-300">{totalSugar}</Text>
+          </View>
+          <View className="flex-row justify-between">
+            <Text className="text-white font-bold">Total Carbohydrate</Text>
+            <Text className="text-gray-300">{totalCarbohydrate}</Text>
+          </View>
+          </View>
+          <View className="flex-column">
+            <Text className="text-white font-extrabold">Choose Meal</Text>
+              <View className="mt-4">
+                <ScrollView
+                  horizontal
+                  showsHorizontalScrollIndicator={false}
+                  className="overflow-visible"
+                  contentContainerStyle={{ paddingHorizontal: 15 }}
+                >
+                  {meals?.map((item) => {
+                    return <TouchableOpacity
+                        key={item.id}
+                        className="p-3 rounded-full mr-3"
+                        style={{backgroundColor: selectedId !== item.id ? COLORS.secondary : themeColors.bg}}
+                        onPress={handleMeal(item)}
+                      >
+                      <Text className="text-white text-center font-regular">
+                        {item.meal_name}
+                      </Text>
+                    </TouchableOpacity>
+                  })}
+                </ScrollView>
+              </View>
+          </View>
+          <View className="mt-6 rounded-full" style={{ backgroundColor: themeColors.bg }}>
+            <TouchableOpacity
+              className="p-3 rounded-full"
+            >
+              <Text className="text-white text-center font-bold text-lg">
+                Create
+              </Text>
+            </TouchableOpacity>
+          </View>
       </View>
     </View>
   );

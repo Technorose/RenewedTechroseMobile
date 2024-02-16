@@ -99,4 +99,24 @@ export default class ApiService {
 
         return returnData;
     }
+
+    static async getMealNamesCodes(take = 10, skip = 0) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'MealNamesCodesList?take=' + take + '&skip=' + skip, {
+            method: 'GET',
+            headers: header,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
 }

@@ -8,10 +8,10 @@ export const selectedNutritionsSlice = createSlice({
   name: 'basket',
   initialState,
   reducers: {
-    addToBasket: (state, action) => {
+    addToBasket: (state = initialState, action) => {
       state.items = [...state.items, action.payload]
     },
-    removeFromBasket: (state, action) => {
+    removeFromBasket: (state = initialState, action) => {
       let newBasket = [...state.items];
       let itemIndex = state.items.findIndex(item=> item.id==action.payload.id);
       if(itemIndex>=0){
@@ -21,7 +21,7 @@ export const selectedNutritionsSlice = createSlice({
       }
       state.items = newBasket
     },
-    emptyBasket: (state, action)=>{
+    emptyBasket: (state = initialState, action)=>{
         state.items = [];
     }
   },
@@ -30,10 +30,10 @@ export const selectedNutritionsSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const { addToBasket, removeFromBasket, emptyBasket } = selectedNutritionsSlice.actions
 
-export const selectBasketItems = state=> state.basket.items;
+export const selectBasketItems = state=> state.selectedNutritions.items;
 
-export const selectBasketItemsById = (state, id)=> state.basket.items.filter(item=> item.id==id);
+export const selectBasketItemsById = (state, id)=> state.selectedNutritions.items.filter(item=> item.id==id);
 
-export const selectBasketTotal = state=> state.basket.items.reduce((total, item)=> total = total += item.price, 0)
+export const selectBasketTotal = state=> state.selectedNutritions.items.reduce((total, item)=> total = total += item.price, 0)
 
-export default selectedNutritionsSlice.reducer
+export default selectedNutritionsSlice.reducer;

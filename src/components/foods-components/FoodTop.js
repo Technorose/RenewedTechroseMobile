@@ -29,8 +29,9 @@ export default function FoodTop() {
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  const selectedNutritionsLength = useSelector(state => state.selectedNutritions.items.length)
   const navigation = useNavigation();
+
+  const selectedNutritionsLength = useSelector(state => state.selectedNutritions.items.length)
 
   const getSearchedDatas = () => {
     if (search === "") return;
@@ -60,14 +61,19 @@ export default function FoodTop() {
     getSearchedDatas()
   };
 
+  const handleMealCreate = () => {
+    console.log("Create meal");
+    navigation.navigate("CreateMeal");
+  }
+
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
-      <View className="flex-row items-end">
-        <ArchiveBoxIcon onPress={() => navigation.navigate("CreateMeal")} height="45" width="45" />
+      <TouchableOpacity onPress={handleMealCreate} className="flex-row items-end">
+        <ArchiveBoxIcon height="45" width="45" />
         <View className="flex-row items-center justify-center absolute left-7 bg-red-600 w-6 h-6 rounded-full">
           <Text className="font-bold  text-white">{selectedNutritionsLength}</Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <Text className="text-3xl font-bold">Nutritions</Text>
       <MagnifyingGlassCircleIcon
         onPress={() => setModal(true)}
