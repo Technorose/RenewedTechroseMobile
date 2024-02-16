@@ -16,7 +16,7 @@ const ProfileScreen = () => {
         await AsyncStorage.getItem("user").then((user) => {
             setUser(JSON.parse(user));
             setYear(new Date().getFullYear() - new Date(JSON.parse(user).birth_date).getFullYear())
-            setProfileImage(googleImageUrl+JSON.parse(user).image)
+            setProfileImage(JSON.parse(user).image.length === 0 ? googleImageUrl+JSON.parse(user).image : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
         })
         .finally(()=> null);
     }

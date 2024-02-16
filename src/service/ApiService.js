@@ -1,6 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { apiUrl } from "../core/statics";
 
-const baseURL = "https://techrosewebapp.azurewebsites.net/"
+const baseURL = apiUrl;
 
 const getToken = async () => AsyncStorage.getItem('token')
 
@@ -129,6 +130,68 @@ export default class ApiService {
         }
 
         await fetch(baseURL + 'NutritionListByNutritionType?nutrition_type_id=' + nutritionTypeId + '&limit=' + limit + '&offset=' + offset, {
+            method: 'GET',
+            headers: header,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
+    static async postUpdateUserPassword(updateData = null) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserUpdatePassword', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(updateData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
+    static async postProfileImage(formData = null) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/form-data',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserUploadProfileImage', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(formData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
+    static async getUserDetails(id = 0) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserDetails?id=' + id, {
             method: 'GET',
             headers: header,
         })

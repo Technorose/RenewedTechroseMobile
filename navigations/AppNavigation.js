@@ -8,6 +8,7 @@ import Onboarding from "../src/screens/Onboarding";
 import Tabs from "./Tabs";
 import CreateMeal from "../src/screens/CreateMeal";
 import ProfileUpdate from "../src/screens/Profile/ProfileUpdate";
+import ChangePassword from "../src/screens/Profile/ChangePassword";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ export default function AppNavigation() {
                 <Stack.Screen name="Main" options={{headerShown: false}} component={Tabs}></Stack.Screen>
                 <Stack.Screen name="CreateMeal" options={{headerShown: false, presentation: 'modal'}} component={CreateMeal}></Stack.Screen>
                 <Stack.Screen name="ProfileUpdate" options={{headerShown: false, presentation: 'modal'}} component={ProfileUpdate}></Stack.Screen>
+                <Stack.Screen name="ChangePassword" options={{headerShown: false, presentation: 'modal'}} component={ChangePassword}></Stack.Screen>
             </Stack.Navigator>
         </NavigationContainer>
     )
