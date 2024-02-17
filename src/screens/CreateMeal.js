@@ -140,7 +140,7 @@ export default function CreateMeal() {
                   horizontal
                   showsHorizontalScrollIndicator={false}
                   className="overflow-visible"
-                  contentContainerStyle={{ paddingHorizontal: 15 }}
+                  contentContainerStyle={{ paddingHorizontal: 25 }}
                 >
                   {meals?.map((item) => {
                     return <TouchableOpacity

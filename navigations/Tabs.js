@@ -2,16 +2,18 @@ import React, { useEffect, useRef, useState } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Home from "../src/screens/Home";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { HomeIcon, UserIcon } from "react-native-heroicons/solid";
+import { HomeIcon, UserIcon, ChartBarIcon } from "react-native-heroicons/solid";
 import ProfileScreen from "../src/screens/Profile/Profile";
 import COLORS from "../src/core/colors";
 import * as Animatable from 'react-native-animatable';
+import DetailsScreen from "../src/screens/DetailsScreen";
 
 const Tab = createBottomTabNavigator();
 
 const TabArr = [
   { route: 'Home', label: 'Home', icon: HomeIcon, component: Home },
   { route: 'Profile', label: 'Profile',  icon: UserIcon, component: ProfileScreen },
+  { route: 'Details', label: 'Details',  icon: ChartBarIcon, component: DetailsScreen },
 ];
 
 const animate1 = { 0: { scale: .5, translateY: 7 }, .92: { translateY: -34 }, 1: { scale: 1., translateY: -14 } }
