@@ -141,6 +141,27 @@ export default class ApiService {
         return returnData;
     }
 
+    static async postUserUpdate(updateData = null) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserUpdate', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(updateData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
     static async postUpdateUserPassword(updateData = null) {
         let returnData = null;
 

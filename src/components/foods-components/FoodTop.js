@@ -76,7 +76,7 @@ export default function FoodTop() {
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
       <TouchableOpacity onPress={handleMealCreate} className="flex-row items-end">
-        <ArchiveBoxIcon height="45" width="45" />
+        <ArchiveBoxIcon height="45" width="45" color={COLORS.primary} />
         <View className="flex-row items-center justify-center absolute left-7 bg-red-600 w-6 h-6 rounded-full">
           <Text className="font-bold  text-white">{selectedNutritionsLength}</Text>
         </View>
@@ -86,6 +86,7 @@ export default function FoodTop() {
         onPress={() => setModal(true)}
         height="55"
         width="55"
+        color={COLORS.primary}
       />
       <Modal
         animationType="fade"
@@ -108,6 +109,7 @@ export default function FoodTop() {
                 onPress={() => setModal(true)}
                 height="35"
                 width="35"
+                color={COLORS.primary}
               />
               <TextInput
                 value={search}
@@ -117,7 +119,7 @@ export default function FoodTop() {
                 keyboardType="default"
               />
             </View>
-            <XMarkIcon onPress={closeModal} height="65" width="65" />
+            <XMarkIcon onPress={closeModal} height="65" width="65" color={COLORS.primary} />
           </View>
           <ScrollView
             showsHorizontalScrollIndicator={false}

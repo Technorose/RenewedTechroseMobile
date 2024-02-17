@@ -1,12 +1,11 @@
-import { KeyboardAvoidingView, SafeAreaView, ScrollView, Text, TextInput, TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Modal } from "react-native"
+import { KeyboardAvoidingView, SafeAreaView, Text, TextInput, TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Modal } from "react-native"
 import { ArrowLeftIcon, CameraIcon } from "react-native-heroicons/solid"
 import COLORS from "../../core/colors"
 import { useNavigation } from "@react-navigation/native"
 import { useEffect, useState } from "react"
 import AsyncStorage from "@react-native-async-storage/async-storage"
-import { apiUrl, googleImageUrl } from "../../core/statics"
+import {  googleImageUrl } from "../../core/statics"
 import * as ImagePicker from 'expo-image-picker';
-import * as FileSystem from 'expo-file-system';
 import ApiService from "../../service/ApiService"
 
 export default function ProfileUpdate() {
@@ -31,6 +30,16 @@ export default function ProfileUpdate() {
         setUser({...user, [name]: value})
     }
 
+    const handleUpdateCredentials = () => {
+        ApiService.postUserUpdate(user)
+        .then(async (response) => {
+            if(response.result.success === true) {
+                await AsyncStorage.setItem("user", JSON.stringify(response.user))
+                setUser(JSON.stringify(response.user))
+            }
+        })
+    }
+
     const uploadImage = async (uri) => {
         const formData = new FormData();
         formData.append('file', {
@@ -43,14 +52,6 @@ export default function ProfileUpdate() {
         .then((response) => {
             if(response.result.success === true) {
                 console.log(response)
-                ApiService.getUserDetails(user.id)
-                .then((response) => {
-                    if(response.result.success === true) {
-                        setProfileImage(googleImageUrl+response.result.image)
-                        setUser({...user, image: response.result.image})
-                        AsyncStorage.setItem("user", JSON.stringify(user))
-                    }
-                })
             }
         })
     };
@@ -78,11 +79,12 @@ export default function ProfileUpdate() {
                 </View>
                 <TouchableOpacity onPress={() => selectImage()} className="flex-row justify-center mt-3">
                     <Image src={profileImage} 
+                        className="rounded-full"
                         style={{width: 128, height: 128}} />
                     <CameraIcon size="20" color="black" />
                 </TouchableOpacity>
               </SafeAreaView>
-              <View className="flex-1 bg-white px-8 pt-8"
+              <View className="flex-1 bg-white px-8 pt-8 mt-3"
                 style={{borderTopLeftRadius: 50, borderTopRightRadius: 50}}
               >
                 <View className="form space-y-2">
@@ -118,7 +120,7 @@ export default function ProfileUpdate() {
                             />
                             <TouchableOpacity
                                 className="py-3 bg-yellow-400 rounded-xl"
-                                
+                                onPress={() => handleUpdateCredentials()}
                             >
                                 <Text className="font-xl font-bold text-center text-gray-700">
                                     Update
