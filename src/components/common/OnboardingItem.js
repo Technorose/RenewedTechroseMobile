@@ -27,7 +27,7 @@ export default function OnboardingItem({ item }) {
                     </View>
                 ) : (
                     <View style={{width: '100%', paddingHorizontal: 22}}>
-                        <TouchableOpacity onPress={()=> navigation.navigate('Welcome')} style={{backgroundColor: themeColors.bg, borderRadius: '8px'}} className="flex-row justify-center mb-10 p-5">
+                        <TouchableOpacity onPress={()=> navigation.navigate('Welcome')} style={{backgroundColor: themeColors.bg, borderRadius: 8}} className="flex-row justify-center mb-10 p-5">
                             <Text className="font-bold text-white">Get Started!</Text>
                         </TouchableOpacity>
                     </View>

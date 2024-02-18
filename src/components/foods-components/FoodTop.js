@@ -23,6 +23,7 @@ import COLORS from "../../core/colors";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { addToBasket } from "../../../slices/selectedNutritionsSlice";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function FoodTop() {
   const [search, setSearch] = useState("");
@@ -34,7 +35,7 @@ export default function FoodTop() {
 
   const navigation = useNavigation();
 
-  const selectedNutritionsLength = useSelector(state => state.selectedNutritions.items.length)
+  const selectedNutritionsLength = useSelector((state) => state.selectedNutritions.items.length);
 
   const getSearchedDatas = () => {
     if (search === "") return;
@@ -56,22 +57,25 @@ export default function FoodTop() {
   const closeModal = () => {
     setModal(false);
     setDatas([]);
-    setSearch('')
+    setSearch("");
   };
 
   const handleSearch = (text) => {
     setSearch(text);
-    getSearchedDatas()
+    getSearchedDatas();
   };
 
   const handleMealCreate = () => {
-    console.log("Create meal");
     navigation.navigate("CreateMeal");
-  }
+  };
 
   const handleAdd = (item) => {
-    dispatch(addToBasket(item))
-  }
+    dispatch(addToBasket(item));
+  };
+
+  const navigateToFoodInfoModal = (item) => {
+    navigation.navigate("FoodInfoModal", { food: item });
+  };
 
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
@@ -88,12 +92,7 @@ export default function FoodTop() {
         width="55"
         color={COLORS.primary}
       />
-      <Modal
-        animationType="fade"
-        transparent={false}
-        visible={modal}
-        onRequestClose={closeModal}
-      >
+      <Modal animationType="fade" transparent={false} visible={modal} onRequestClose={closeModal}>
         <Text className="text-gray-500 mt-14 font-bold text-center">Search nutrition</Text>
         <View
           style={{
@@ -137,9 +136,7 @@ export default function FoodTop() {
                       <View className="">
                         <View className="px-3.5 pb-6 space-y-3">
                           <View className="flex-row justify-between pt-3">
-                            <Text className="text-lg font-bold">
-                              {item.name}
-                            </Text>
+                            <Text className="text-lg font-bold">{item.name}</Text>
                             <View className="mt-1 bg-blue-100 text-blue-800 text-xs font-medium ml-1.5 px-2.5 py-0.5 rounded-full">
                               <Text className="text-gray-700 font-semibold">
                                 {item.nutrition_type.nutrition_type_name}
@@ -148,44 +145,39 @@ export default function FoodTop() {
                           </View>
                           <View className="flex-row justify-between">
                             <View className="flex-column items-left">
-                              <Text className="text-gray-700 font-bold">
-                                Calorie{" "}
-                              </Text>
-                              <Text className="text-gray-700 text-xs">
-                                {item.calorie}
-                              </Text>
+                              <Text className="text-gray-700 font-bold">Calorie </Text>
+                              <Text className="text-gray-700 text-xs">{item.calorie}</Text>
                             </View>
                             <View className="flex-column items-left">
-                              <Text className="text-gray-700 font-bold">
-                                Carbohydrate{" "}
-                              </Text>
-                              <Text className="text-gray-700 text-xs">
-                                {item.carbo_hydrate}
-                              </Text>
+                              <Text className="text-gray-700 font-bold">Carbohydrate </Text>
+                              <Text className="text-gray-700 text-xs">{item.carbo_hydrate}</Text>
                             </View>
                             <View className="flex-column items-left">
-                              <Text className="text-gray-700 font-bold">
-                                Sugar{" "}
-                              </Text>
-                              <Text className="text-gray-700 text-xs">
-                                {item.sugar}
-                              </Text>
+                              <Text className="text-gray-700 font-bold">Sugar </Text>
+                              <Text className="text-gray-700 text-xs">{item.sugar}</Text>
                             </View>
                           </View>
                           <View className="flex-row justify-between">
                             <Text className="text-xs">
-                              <Text className="text-gray-700 ml-4">
-                                Serving Size:{" "}
-                              </Text>
-                              <Text className="text-green-700">
-                                {item.serving_size}
-                              </Text>
+                              <Text className="text-gray-700 ml-4">Serving Size: </Text>
+                              <Text className="text-green-700">{item.serving_size}</Text>
                             </Text>
-                            <TouchableOpacity onPress={() => handleAdd(item)}>
-                              <Text className="font-semibold text-yellow-500">
-                                + Add
-                              </Text>
-                            </TouchableOpacity>
+                            <View className="flex-row gap-2">
+                              <TouchableOpacity onPress={() => navigateToFoodInfoModal(item)}>
+                                <MaterialCommunityIcons
+                                  className="font-semibold text-blue-400 bg-blue-100 rounded-full p-0.5"
+                                  name="information-outline"
+                                  size={26}
+                                />
+                              </TouchableOpacity>
+                              <TouchableOpacity onPress={() => handleAdd(item)}>
+                                <MaterialCommunityIcons
+                                  className="font-semibold text-yellow-500 bg-yellow-100 rounded-full p-0.5"
+                                  name="plus"
+                                  size={26}
+                                />
+                              </TouchableOpacity>
+                            </View>
                           </View>
                         </View>
                       </View>
@@ -193,12 +185,12 @@ export default function FoodTop() {
                   </View>
                 );
               })
+            ) : loading === true ? (
+              <ActivityIndicator size="large" color={COLORS.primary} />
             ) : (
-              loading === true ? (
-                <ActivityIndicator size="large" color={COLORS.primary} />
-              ) : (
-                <Text className="text-gray-500 font-bold text-center mt-4">Please search nutrition/nutritions!</Text>
-              )
+              <Text className="text-gray-500 font-bold text-center mt-4">
+                Please search nutrition/nutritions!
+              </Text>
             )}
           </ScrollView>
         </View>
