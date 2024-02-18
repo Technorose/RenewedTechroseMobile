@@ -21,27 +21,21 @@ import {
 import BottomSheet from "../components/common/BottomSheet";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { googleImageUrl } from "../core/statics";
+import { ReceiptPercentIcon } from "react-native-heroicons/solid";
+import { useDispatch, useSelector } from "react-redux";
 
 export default function DetailsScreen() {
   const [selected, setSelected] = useState(
     new Date().toISOString().split("T")[0]
   );
 
-  const [user, setUser] = useState({});
 
-  useEffect(() => {
-    const getUser = async () => {
-      await AsyncStorage.getItem("user").then((userData) => {
-        setUser(JSON.parse(userData));
-      });
-    };
-    getUser();
-  }, []);
+  const user = useSelector(state => state.user.user)
 
   const refRBSheet = useRef();
 
+  const chartlabels1 = ["Calories", "Carbohydrate", "Sugar"]
   const chart1 = {
-    labels: ["Calories", "Carbohydrate", "Sugar"],
     data: [0.4, 0.6, 0.8],
   };
 
@@ -57,7 +51,6 @@ export default function DetailsScreen() {
     propsForLabels: {
       fontWeight: "bold",
       fill: "white",
-      x: 100,
     },
   };
 
@@ -65,11 +58,8 @@ export default function DetailsScreen() {
     backgroundColor: COLORS.primary,
     backgroundGradientFrom: COLORS.primary,
     backgroundGradientTo: COLORS.primary,
-    decimalPlaces: 2,
+    decimalPlaces: 1,
     color: (opacity = 1) => `rgba(255, 255, 255, ${opacity - 0.1})`,
-    style: {
-      borderRadius: 25,
-    },
   };
 
   const chart2 = {
@@ -88,6 +78,7 @@ export default function DetailsScreen() {
           ],
         },
       ],
+      legend: ["Blood Sugar Values"]
     },
   };
 
@@ -127,7 +118,7 @@ export default function DetailsScreen() {
           <View className="flex-row justify-between">
             <View className="flex-column items-left mr-4">
               <Text className="text-gray-700 font-bold">Total dose </Text>
-              <Text className="text-gray-700 text-xs">{user.total_dose_value.toFixed(4)}</Text>
+              <Text className="text-gray-700 text-xs">{user.total_dose_value?.toFixed(4)}</Text>
             </View>
             <View className="flex-column items-left mr-4">
               <Text className="text-gray-700 font-bold">Blood sugar </Text>
@@ -149,7 +140,7 @@ export default function DetailsScreen() {
         className="overflow-visible"
         contentContainerStyle={{ paddingHorizontal: 5 }}
       >
-        <View className="flex-row justify-between items-center p-2 mt-3">
+        <View className="flex-row justify-between items-center p-2 mt-2">
           <Text className="text-2xl font-bold">Your stats</Text>
           <Text className="text-yellow-500">See all {">>>"}</Text>
         </View>
@@ -160,6 +151,16 @@ export default function DetailsScreen() {
           contentContainerStyle={{ paddingHorizontal: 5 }}
         >
           <View className="mr-3">
+            <View className="flex-row justify-between ml-4 mr-4">
+              {chartlabels1.map((label, index) => {
+                return (
+                  <View className="flex-row justify-center items-center">
+                    <Text className="text-gray-500 text-center font-bold">{chart1.data[index] * 100}%{" "}</Text>
+                    <Text className="text-gray-500 text-center">{label}</Text>
+                  </View>
+                );
+              })}
+            </View>
             <ProgressChart
               data={chart1}
               width={screenWidth - 32}
@@ -171,10 +172,20 @@ export default function DetailsScreen() {
               style={{ top: 10, borderRadius: 25 }}
             />
           </View>
-          <View className="">
+          <View className="ml-3">
+            <View className="flex-row justify-between ml-4 mr-4">
+              {chartlabels1.map((label, index) => {
+                return (
+                  <View className="flex-row justify-center items-center">
+                    <Text className="text-gray-500 text-center font-bold">{chart1.data[index] * 100}%{" "}</Text>
+                    <Text className="text-gray-500 text-center">{label}</Text>
+                  </View>
+                );
+              })}
+            </View>
             <ProgressChart
               data={chart1}
-              width={screenWidth}
+              width={screenWidth - 32}
               height={220}
               radius={24}
               absolute={true}
@@ -184,16 +195,15 @@ export default function DetailsScreen() {
             />
           </View>
         </ScrollView>
-        <View className="">
+        <View className="mt-5 ml-1">
           <LineChart
             data={chart2.data}
-            width={screenWidth - 24}
-            height={236}
+            width={screenWidth - 32}
+            height={232}
             chartConfig={chartConfig2}
             bezier
-            absolute={true}
-            className="mt-8"
             style={{ borderRadius: 25 }}
+
           />
         </View>
       </ScrollView>

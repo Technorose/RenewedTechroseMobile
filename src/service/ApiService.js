@@ -187,14 +187,14 @@ export default class ApiService {
         let returnData = null;
 
         const header = {
-            'Content-Type': 'application/form-data',
+            'Content-Type': 'multipart/form-data',
             Authorization: 'Bearer ' + await getToken()
         }
 
         await fetch(baseURL + 'UserUploadProfileImage', {
             method: 'POST',
             headers: header,
-            body: JSON.stringify(formData)
+            body: formData
         })
         .then((response) => response.json())
         .then((data) => {

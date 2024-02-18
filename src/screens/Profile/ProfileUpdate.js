@@ -1,4 +1,4 @@
-import { KeyboardAvoidingView, SafeAreaView, Text, TextInput, TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Modal } from "react-native"
+import { KeyboardAvoidingView, SafeAreaView, Text, TextInput, TouchableOpacity, View, Image, Keyboard, TouchableWithoutFeedback, Modal, Platform } from "react-native"
 import { ArrowLeftIcon, CameraIcon } from "react-native-heroicons/solid"
 import COLORS from "../../core/colors"
 import { useNavigation } from "@react-navigation/native"
@@ -7,24 +7,14 @@ import AsyncStorage from "@react-native-async-storage/async-storage"
 import {  googleImageUrl } from "../../core/statics"
 import * as ImagePicker from 'expo-image-picker';
 import ApiService from "../../service/ApiService"
+import { useDispatch, useSelector } from "react-redux"
+import { updateUser } from "../../../slices/userSlice"
 
 export default function ProfileUpdate() {
     const navigation = useNavigation()
 
-    const [user, setUser] = useState({});
-    const [year, setYear] = useState(0);
-    const [profileImage, setProfileImage] = useState(null);
-
-    useEffect(() => {
-        const getUserDatas = async () => {
-            await AsyncStorage.getItem("user").then((user) => {
-                setUser(JSON.parse(user));
-                setYear(new Date().getFullYear() - new Date(JSON.parse(user).birth_date).getFullYear())
-                setProfileImage(googleImageUrl+JSON.parse(user).image)
-            })
-        }
-        getUserDatas();
-    }, [])
+    const user = useSelector(state => state.user.user)
+    const dispatch = useDispatch()
 
     const handleCredentialsChange = (name, value) => {
         setUser({...user, [name]: value})
@@ -35,35 +25,40 @@ export default function ProfileUpdate() {
         .then(async (response) => {
             if(response.result.success === true) {
                 await AsyncStorage.setItem("user", JSON.stringify(response.user))
-                setUser(JSON.stringify(response.user))
+                dispatch(updateUser(response.user))
             }
         })
     }
 
-    const uploadImage = async (uri) => {
-        const formData = new FormData();
+    const uploadImage = (result) => {
+        let formData = new FormData();
         formData.append('file', {
-            uri: uri,
-            type: 'image/png',
-            name: 'profile.png'
+            uri: Platform.OS === "android" ? result.uri : result.uri.replace("file://", ""),
+            type: result.type,
+            name: result.fileName
         })
 
         ApiService.postProfileImage(formData)
-        .then((response) => {
-            if(response.result.success === true) {
-                console.log(response)
-            }
-        })
+            .then(async (response) => {
+                if(response.result.success === true) {
+                    await AsyncStorage.setItem("user", JSON.stringify(user))
+                    dispatch(updateUser(response.user))
+                } else {
+                    console.log(response)
+                }
+            }).catch((error) => {
+                console.log(error)
+            })
     };
 
     const selectImage = async () => {
-        let result = await ImagePicker.launchImageLibraryAsync({
+        await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        }).then((result) => {
+            if(!result.canceled) {
+                uploadImage(result.assets[0])
+            }
         })
-
-        if(!result.canceled) {
-            await uploadImage(result.assets[0].uri)
-        }
     }
 
     return (
@@ -78,7 +73,7 @@ export default function ProfileUpdate() {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => selectImage()} className="flex-row justify-center mt-3">
-                    <Image src={profileImage} 
+                    <Image src={googleImageUrl+user.image} 
                         className="rounded-full"
                         style={{width: 128, height: 128}} />
                     <CameraIcon size="20" color="black" />
