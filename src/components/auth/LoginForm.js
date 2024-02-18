@@ -23,11 +23,14 @@ import ApiService from '../../service/ApiService'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import Toast from 'react-native-toast-message'
 import COLORS from '../../core/colors'
+import { useDispatch } from 'react-redux'
+import { addUser } from '../../../slices/userSlice'
 
 export default function LoginForm() {
   const navigation = useNavigation();
 
   const [resultModal, setResultModal] = useState(false)
+  const dispatch = useDispatch()
 
   const [formData, setFormData] = useState({
     user_name: '',
@@ -74,6 +77,8 @@ export default function LoginForm() {
           // })
           AsyncStorage.setItem('user', JSON.stringify(response.user))
           AsyncStorage.setItem('token', response.token)
+          dispatch(addUser(response.user))
+
           setTimeout(() => {
             setResultModal(false)
             navigation.navigate("Main")

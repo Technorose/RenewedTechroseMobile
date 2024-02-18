@@ -5,23 +5,10 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { googleImageUrl } from "../../core/statics";
 import COLORS from "../../core/colors";
+import { useSelector } from "react-redux";
 
 const ProfileScreen = () => {
-  const [user, setUser] = useState({});
-  const [year, setYear] = useState(0);
-  const [profileImage, setProfileImage] = useState(null);
-
-  useEffect(() => {
-    const getUserDatas = async () => {
-        await AsyncStorage.getItem("user").then((user) => {
-            setUser(JSON.parse(user));
-            setYear(new Date().getFullYear() - new Date(JSON.parse(user).birth_date).getFullYear())
-            setProfileImage(JSON.parse(user).image.length !== 0 ? googleImageUrl+JSON.parse(user).image : 'https://www.pngitem.com/pimgs/m/146-1468479_my-profile-icon-blank-profile-picture-circle-hd.png')
-        })
-        .finally(()=> null);
-    }
-    getUserDatas();
-  }, [])
+  const user = useSelector(state => state.user.user)
 
   const navigation = useNavigation();
 
@@ -54,7 +41,7 @@ const ProfileScreen = () => {
           </View>
         </View>
         <View style={styles.personelInfos}>
-            <Image style={styles.avatar} src={profileImage} />
+            <Image style={styles.avatar} src={googleImageUrl+user.image} />
           <View style={styles.personelText}>
             <Text style={styles.userName}>{user.first_name + " " + user.last_name}</Text>
             <View style={styles.memberInfo}>
@@ -70,7 +57,7 @@ const ProfileScreen = () => {
         <View style={styles.mainContentHeader}>
           <View style={styles.mainContentHeaderContainer}>
             <Text style={styles.mainContentTitle}>Age</Text>
-            <Text style={styles.mainContentValue}>{year}y</Text>
+            <Text style={styles.mainContentValue}>{new Date().getFullYear() - new Date(user.birth_date).getFullYear()}y</Text>
           </View>
           <View style={styles.mainContentHeaderContainer}>
             <Text style={styles.mainContentTitle}>Weight</Text>
