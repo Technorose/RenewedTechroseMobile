@@ -1,6 +1,5 @@
 import {
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   Dimensions,
@@ -9,26 +8,24 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import COLORS from "../core/colors";
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState  } from "react";
 import {
   LineChart,
-  BarChart,
-  PieChart,
   ProgressChart,
-  ContributionGraph,
-  StackedBarChart,
 } from "react-native-chart-kit";
 import BottomSheet from "../components/common/BottomSheet";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { googleImageUrl } from "../core/statics";
-import { ReceiptPercentIcon } from "react-native-heroicons/solid";
-import { useDispatch, useSelector } from "react-redux";
+import {  useSelector } from "react-redux";
 
 export default function DetailsScreen() {
   const [selected, setSelected] = useState(
     new Date().toISOString().split("T")[0]
   );
 
+  const randomNumber = () => {
+    const generatedNumber = ((Math.random() * 0.8) + 0.1).toFixed(1);
+    return isNaN(generatedNumber) ? 0 : generatedNumber;
+  };
 
   const user = useSelector(state => state.user.user)
 
@@ -36,7 +33,7 @@ export default function DetailsScreen() {
 
   const chartlabels1 = ["Calories", "Carbohydrate", "Sugar"]
   const chart1 = {
-    data: [0.4, 0.6, 0.8],
+    data: [0.4,0.6,0.8]
   };
 
   const chartConfig1 = {
@@ -64,7 +61,7 @@ export default function DetailsScreen() {
 
   const chart2 = {
     data: {
-      labels: ["January", "February", "March", "April", "May", "June"],
+      labels: ["January", "February", "March", "April", "May", "June", "July"],
       datasets: [
         {
           data: [
@@ -87,6 +84,7 @@ export default function DetailsScreen() {
 
   const handleSelectDate = (date) => {
     setSelected(date);
+    chart2.data.datasets[0].data = [Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100, Math.random() * 100]
   };
 
   return (
