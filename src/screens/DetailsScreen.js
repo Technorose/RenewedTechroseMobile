@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import COLORS from "../core/colors";
-import { useRef, useState  } from "react";
+import { useEffect, useRef, useState  } from "react";
 import {
   LineChart,
   ProgressChart,
@@ -16,25 +16,22 @@ import {
 import BottomSheet from "../components/common/BottomSheet";
 import { googleImageUrl } from "../core/statics";
 import {  useSelector } from "react-redux";
+import ApiService from "../service/ApiService";
 
 export default function DetailsScreen() {
   const [selected, setSelected] = useState(
     new Date().toISOString().split("T")[0]
   );
-
-  const randomNumber = () => {
-    const generatedNumber = ((Math.random() * 0.8) + 0.1).toFixed(1);
-    return isNaN(generatedNumber) ? 0 : generatedNumber;
-  };
+  const [data, setData] = useState({
+    Calories: 0,
+    Carbohydrate: 0,
+    Sugar: 0,
+  });
 
   const user = useSelector(state => state.user.user)
 
   const refRBSheet = useRef();
 
-  const chartlabels1 = ["Calories", "Carbohydrate", "Sugar"]
-  const chart1 = {
-    data: [0.4,0.6,0.8]
-  };
 
   const chartConfig1 = {
     backgroundColor: COLORS.primary,
@@ -78,6 +75,19 @@ export default function DetailsScreen() {
       legend: ["Blood Sugar Values"]
     },
   };
+
+  useEffect(() => {
+    ApiService.getUserMealsDetails(selected)
+      .then((response) => {
+        if (response.result.success === true) {
+          setData({
+            Calories: response.total_calories,
+            Carbohydrate: response.total_carbohydrate,
+            Sugar: response.total_sugar,
+          });
+        }
+      })
+  }, [selected])
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
@@ -150,17 +160,17 @@ export default function DetailsScreen() {
         >
           <View className="mr-3">
             <View className="flex-row justify-between ml-4 mr-4">
-              {chartlabels1.map((label, index) => {
+              {Object.entries(data).map((values, index) => {
                 return (
                   <View className="flex-row justify-center items-center">
-                    <Text className="text-gray-500 text-center font-bold">{chart1.data[index] * 100}%{" "}</Text>
-                    <Text className="text-gray-500 text-center">{label}</Text>
+                    <Text className="text-gray-500 text-center font-bold">{values[1] / 10}%{" "}</Text>
+                    <Text className="text-gray-500 text-center">{values[0]}</Text>
                   </View>
                 );
               })}
             </View>
             <ProgressChart
-              data={chart1}
+              data={[data.Calories / 1000, data.Carbohydrate / 100, (data.Sugar/1000)]}
               width={screenWidth - 32}
               height={220}
               radius={24}
@@ -172,17 +182,17 @@ export default function DetailsScreen() {
           </View>
           <View className="ml-3">
             <View className="flex-row justify-between ml-4 mr-4">
-              {chartlabels1.map((label, index) => {
+            {Object.entries(data).map((values, index) => {
                 return (
                   <View className="flex-row justify-center items-center">
-                    <Text className="text-gray-500 text-center font-bold">{chart1.data[index] * 100}%{" "}</Text>
-                    <Text className="text-gray-500 text-center">{label}</Text>
+                    <Text className="text-gray-500 text-center font-bold">{values[1] / 10}%{" "}</Text>
+                    <Text className="text-gray-500 text-center">{values[0]}</Text>
                   </View>
                 );
               })}
             </View>
             <ProgressChart
-              data={chart1}
+              data={[data.Calories / 1000, data.Carbohydrate/100, (data.Sugar/1000)]}
               width={screenWidth - 32}
               height={220}
               radius={24}

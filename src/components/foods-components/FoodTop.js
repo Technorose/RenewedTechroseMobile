@@ -6,17 +6,13 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  Image,
-  Dimensions,
 } from "react-native";
 import {
   ArchiveBoxIcon,
-  InboxIcon,
-  LockClosedIcon,
   MagnifyingGlassCircleIcon,
   XMarkIcon,
 } from "react-native-heroicons/solid";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
 import COLORS from "../../core/colors";
@@ -38,6 +34,8 @@ export default function FoodTop() {
   const selectedNutritionsLength = useSelector((state) => state.selectedNutritions.items.length);
 
   const getSearchedDatas = () => {
+    setLoading(true)
+
     if (search === "") return;
 
     ApiService.getNutritionBySearch(search).then((response) => {
@@ -51,7 +49,8 @@ export default function FoodTop() {
           text2: response.result.error_description,
         });
       }
-    });
+    })
+    .finally(() => setLoading(false));
   };
 
   const closeModal = () => {
@@ -165,14 +164,14 @@ export default function FoodTop() {
                             <View className="flex-row gap-2">
                               <TouchableOpacity onPress={() => navigateToFoodInfoModal(item)}>
                                 <MaterialCommunityIcons
-                                  className="font-semibold text-blue-400 bg-blue-100 rounded-full p-0.5"
+                                  className="font-semibold text-blue-400"
                                   name="information-outline"
                                   size={26}
                                 />
                               </TouchableOpacity>
                               <TouchableOpacity onPress={() => handleAdd(item)}>
                                 <MaterialCommunityIcons
-                                  className="font-semibold text-yellow-500 bg-yellow-100 rounded-full p-0.5"
+                                  className="font-semibold text-yellow-500"
                                   name="plus"
                                   size={26}
                                 />
@@ -186,7 +185,7 @@ export default function FoodTop() {
                 );
               })
             ) : loading === true ? (
-              <ActivityIndicator size="large" color={COLORS.primary} />
+              <ActivityIndicator size="large" color={COLORS.primary} className="mt-4" />
             ) : (
               <Text className="text-gray-500 font-bold text-center mt-4">
                 Please search nutrition/nutritions!

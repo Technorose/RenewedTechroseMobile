@@ -25,7 +25,7 @@ export default function MealInfoModal({ route }) {
   const { food } = route.params;
 
   useEffect(() => {
-    console.log(food);
+    console.log(route.params);
   }, []);
 
   const handleClose = () => {

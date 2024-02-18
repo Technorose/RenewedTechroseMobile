@@ -223,4 +223,66 @@ export default class ApiService {
 
         return returnData;
     }
+
+    static async postCreateMeal(mealData = null) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'MealCreate', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(mealData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
+    static async postCreateUserNutrition(userNutritionData = null) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserNutritionCreate', {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify(userNutritionData)
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
+
+    static async getUserMealsDetails(date = new Date().toISOString()) {
+        let returnData = null;
+
+        const header = {
+            'Content-Type': 'application/json',
+            Authorization: 'Bearer ' + await getToken()
+        }
+
+        await fetch(baseURL + 'UserGetMealsValues?date=' + date, {
+            method: 'GET',
+            headers: header,
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            returnData = data;
+        })
+
+        return returnData;
+    }
 }

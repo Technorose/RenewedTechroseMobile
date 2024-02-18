@@ -5,12 +5,13 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   removeFromBasket,
-  selectBasketItems,
+  emptyBasket,
   selectBasketTotal,
 } from "../../slices/selectedNutritionsSlice";
 import { useNavigation } from "@react-navigation/native";
@@ -18,11 +19,14 @@ import { MinusIcon } from "react-native-heroicons/solid";
 import COLORS from "../core/colors";
 import ApiService from "../service/ApiService";
 import { themeColors } from "../../theme";
+import Toast from "react-native-toast-message";
 
 export default function CreateMeal() {
   const [groupedItems, setGroupedItems] = useState([]);
   const basketItems = useSelector(state => state.selectedNutritions.items);
   const basketTotal = useSelector(selectBasketTotal);
+  const user = useSelector(state => state.user.user);
+  const [loading, setLoading] = useState(false);
 
   const totalCalorie = basketItems.reduce((total, item) => total += item.calorie, 0);
   const totalSugar = basketItems.reduce((total, item) => total += item.sugar, 0);
@@ -52,6 +56,52 @@ export default function CreateMeal() {
     dispatch(removeFromBasket(item));
   }
 
+  const handleCreate = () => {
+    setLoading(true)
+
+    let mealData = {
+      user_id: user.id,
+      meal_name_code: selectedId,
+      blood_sugar: 40,
+      meal_time: new Date().toISOString()
+    }
+
+    ApiService.postCreateMeal(mealData)
+      .then((response) => {
+        if(response.result.success === true) {
+          let userNutritions = basketItems.map((item) => {
+            return {
+              user_id: user.id,
+              nutrition_id: item.id,
+              meal_id: response.id,
+              portion: 1,
+              meal_time: new Date().toISOString()
+            }
+          })
+
+          ApiService.postCreateUserNutrition(userNutritions)
+            .then((response) => {
+              if(response.result.success === true) {
+                setLoading(false)
+                dispatch(emptyBasket())
+                navigation.navigate("Home");
+                Toast.show({
+                  type: "success",
+                  text1: "Success",
+                  text2: "Meal created successfully"
+                })
+              }
+            })
+          } else {
+            Toast.show({
+              type: "error",
+              text1: "Error",
+              text2: "Error creating meal"
+            })
+          }
+        })
+  }
+
   useMemo(() => {
     setGroupedItems(basketItems)
   }, [basketItems])
@@ -73,7 +123,7 @@ export default function CreateMeal() {
             paddingHorizontal: 10,
           }}
         >
-          {groupedItems.length > 0 ? (
+          {(groupedItems.length && !loading) > 0 ? (
             <View>
               {groupedItems?.map((item) => {
                 return (
@@ -112,7 +162,7 @@ export default function CreateMeal() {
               })}
             </View>
           ) : (
-            <Text className="text-center">No items...</Text>
+            !loading ? <Text className="text-center">No items...</Text> :  <ActivityIndicator size="large" color={COLORS.primary} />
           )}
         </ScrollView>
       </View>
@@ -160,6 +210,7 @@ export default function CreateMeal() {
           <View className="mt-6 rounded-full" style={{ backgroundColor: themeColors.bg }}>
             <TouchableOpacity
               className="p-3 rounded-full"
+              onPress={() => handleCreate()}
             >
               <Text className="text-white text-center font-bold text-lg">
                 Create

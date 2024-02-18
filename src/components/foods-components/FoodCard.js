@@ -104,14 +104,14 @@ export default function FoodCard({ choosedCategory }) {
                     <View className="flex-row gap-2">
                       <TouchableOpacity onPress={() => navigateToFoodInfoModal(item)}>
                         <MaterialCommunityIcons
-                          className="font-semibold text-blue-400 bg-blue-100 rounded-full p-0.5"
+                          className="font-semibold text-blue-400"
                           name="information-outline"
                           size={26}
                         />
                       </TouchableOpacity>
                       <TouchableOpacity onPress={() => handleDispatch(item)}>
                         <MaterialCommunityIcons
-                          className="font-semibold text-yellow-500 bg-yellow-100 rounded-full p-0.5"
+                          className="font-semibold text-yellow-500"
                           name="plus"
                           size={26}
                         />
