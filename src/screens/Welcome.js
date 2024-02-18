@@ -3,6 +3,7 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../core/colors";
 import { useNavigation } from "@react-navigation/native";
+import { themeColors } from "../../theme";
 
 const { width, height } = Dimensions.get("window");
 
@@ -47,7 +48,7 @@ export default function Welcome() {
           <TouchableOpacity
             onPress={() => navigation.navigate("Login")}
             style={{
-              backgroundColor: COLORS.white,
+              backgroundColor: themeColors.bg,
               borderRadius: 8,
               alignItems: "center",
               padding: width * 0.03,
