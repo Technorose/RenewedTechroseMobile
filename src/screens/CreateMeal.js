@@ -71,7 +71,6 @@ export default function CreateMeal() {
         if(response.result.success === true) {
           let userNutritions = basketItems.map((item) => {
             return {
-              user_id: user.id,
               nutrition_id: item.id,
               meal_id: response.id,
               portion: 1,

@@ -69,6 +69,7 @@ export default function LoginForm() {
 
     ApiService.login(formData)
       .then(response => {
+        console.log(response)
         if(response.result.success === true) {
           setResultModal(true)
           // Toast.show({
