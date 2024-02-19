@@ -20,12 +20,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { addToBasket } from "../../../slices/selectedNutritionsSlice";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
+import FoodInfoModal from "../../screens/Foods/FoodInfoModal";
 
 export default function FoodTop() {
   const [search, setSearch] = useState("");
   const [datas, setDatas] = useState([]);
   const [modal, setModal] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [selectedNutrition, setSelectedNutrition] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -72,15 +75,16 @@ export default function FoodTop() {
     dispatch(addToBasket(item));
   };
 
-  const navigateToFoodInfoModal = (item) => {
-    navigation.navigate("FoodInfoModal", { food: item });
+  const showFoodInfoModal = (item) => {
+    setSelectedNutrition(item);
+    setModalVisible(true);
   };
 
-  useEffect(() => {
-    console.log("FoodTop");
-    console.log(modal);
-  }, []);
-
+  const closeFoodInfoModal = () => {
+    setSelectedNutrition(null);
+    setModalVisible(false);
+  };
+  
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
       <TouchableOpacity onPress={handleMealCreate} className="flex-row items-end">
@@ -167,7 +171,7 @@ export default function FoodTop() {
                               <Text className="text-green-700">{item.serving_size}</Text>
                             </Text>
                             <View className="flex-row gap-2">
-                              <TouchableOpacity onPress={() => navigateToFoodInfoModal(item)}>
+                              <TouchableOpacity onPress={() => showFoodInfoModal(item)}>
                                 <MaterialCommunityIcons
                                   className="font-semibold text-blue-400"
                                   name="information-outline"
@@ -199,6 +203,13 @@ export default function FoodTop() {
           </ScrollView>
         </View>
       </Modal>
+      {modalVisible && (
+        <FoodInfoModal
+          visible={modalVisible}
+          food={selectedNutrition}
+          onClose={() => closeFoodInfoModal()}
+        />
+      )}
     </View>
   );
 }

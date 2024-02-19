@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
 import FoodInfoModal from "../../screens/Foods/FoodInfoModal";
+import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default function LessCaloriesFood() {
   const [nutritionsList, setNutritionsList] = useState([]);

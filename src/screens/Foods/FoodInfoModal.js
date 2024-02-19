@@ -9,8 +9,6 @@ export default function FoodInfoModal({ visible, food, onClose = () => {} }) {
     onClose();
   };
 
-  useEffect(() => {console.log(food)}, []);
-
   return (
     <Modal animationType="fade" transparent={false} visible={visible} onRequestClose={handleClose}>
       <View className="flex-1 bg-white" style={{ backgroundColor: COLORS.white }}>

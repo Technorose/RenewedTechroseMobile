@@ -135,7 +135,7 @@ export default function FoodCard({ choosedCategory }) {
           <ActivityIndicator size="large" color={COLORS.primary} />
         )}
       </ScrollView>
-      {selectedNutrition && (
+      {modalVisible && (
         <FoodInfoModal
           visible={modalVisible}
           food={selectedNutrition}

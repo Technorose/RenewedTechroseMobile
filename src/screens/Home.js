@@ -9,7 +9,7 @@ export default function Home() {
     const [choosedCategory, setChoosedCategory] = useState(0)
 
     return (
-        <View className="mt-14 mb-20">
+        <View className="mt-14">
             <ScrollView>
                 <FoodTop />
                 <View className="flex-column">
