@@ -7,20 +7,28 @@ import { useDispatch } from "react-redux";
 import { addToBasket } from "../../../slices/selectedNutritionsSlice";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { useNavigation } from "@react-navigation/native";
+import FoodInfoModal from "../../screens/Foods/FoodInfoModal";
 
 export default function FoodCard({ choosedCategory }) {
   const [nutritionsList, setNutritionsList] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedNutrition, setSelectedNutrition] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const dispatch = useDispatch();
-  const navigation = useNavigation();
 
   const handleDispatch = (item) => {
     dispatch(addToBasket(item));
   };
 
-  const navigateToFoodInfoModal = (item) => {
-    navigation.navigate("FoodInfoModal", { food: item });
+  const showFoodInfoModal = (item) => {
+    setSelectedNutrition(item);
+    setModalVisible(true);
+  };
+
+  const closeFoodInfoModal = () => {
+    setSelectedNutrition(null);
+    setModalVisible(false);
   };
 
   useEffect(() => {
@@ -65,9 +73,10 @@ export default function FoodCard({ choosedCategory }) {
         contentContainerStyle={{ paddingHorizontal: 15 }}
       >
         {!loading && nutritionsList.length > 0 ? (
-          nutritionsList.map((item) => {
+          nutritionsList.map((item, index) => {
             return (
               <View
+                key={index}
                 style={{ shadowColor: COLORS.grey, shadowRadius: 7 }}
                 className="mr-6 bg-white rounded-3xl shadow-lg"
               >
@@ -102,7 +111,7 @@ export default function FoodCard({ choosedCategory }) {
                       <Text className="text-green-700">{item.serving_size}</Text>
                     </Text>
                     <View className="flex-row gap-2">
-                      <TouchableOpacity onPress={() => navigateToFoodInfoModal(item)}>
+                      <TouchableOpacity onPress={() => showFoodInfoModal(item)}>
                         <MaterialCommunityIcons
                           className="font-semibold text-blue-400"
                           name="information-outline"
@@ -126,6 +135,13 @@ export default function FoodCard({ choosedCategory }) {
           <ActivityIndicator size="large" color={COLORS.primary} />
         )}
       </ScrollView>
+      {selectedNutrition && (
+        <FoodInfoModal
+          visible={modalVisible}
+          food={selectedNutrition}
+          onClose={() => closeFoodInfoModal()}
+        />
+      )}
     </View>
   );
 }

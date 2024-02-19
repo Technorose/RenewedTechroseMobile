@@ -93,6 +93,7 @@ const Tabs = () => {
               options={{
                 tabBarShowLabel: false,
                 headerShown: false,
+                
                 tabBarButton: (props) => <TabButton {...props} item={item} />
               }}
             />

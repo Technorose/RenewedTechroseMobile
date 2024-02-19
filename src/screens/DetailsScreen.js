@@ -162,7 +162,7 @@ export default function DetailsScreen() {
             <View className="flex-row justify-between ml-4 mr-4">
               {Object.entries(data).map((values, index) => {
                 return (
-                  <View className="flex-row justify-center items-center">
+                  <View key={index} className="flex-row justify-center items-center">
                     <Text className="text-gray-500 text-center font-bold">{values[1] / 10}%{" "}</Text>
                     <Text className="text-gray-500 text-center">{values[0]}</Text>
                   </View>
@@ -184,7 +184,7 @@ export default function DetailsScreen() {
             <View className="flex-row justify-between ml-4 mr-4">
             {Object.entries(data).map((values, index) => {
                 return (
-                  <View className="flex-row justify-center items-center">
+                  <View key={index} className="flex-row justify-center items-center">
                     <Text className="text-gray-500 text-center font-bold">{values[1] / 10}%{" "}</Text>
                     <Text className="text-gray-500 text-center">{values[0]}</Text>
                   </View>

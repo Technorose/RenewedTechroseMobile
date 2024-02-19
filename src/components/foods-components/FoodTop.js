@@ -12,7 +12,7 @@ import {
   MagnifyingGlassCircleIcon,
   XMarkIcon,
 } from "react-native-heroicons/solid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ApiService from "../../service/ApiService";
 import Toast from "react-native-toast-message";
 import COLORS from "../../core/colors";
@@ -76,6 +76,11 @@ export default function FoodTop() {
     navigation.navigate("FoodInfoModal", { food: item });
   };
 
+  useEffect(() => {
+    console.log("FoodTop");
+    console.log(modal);
+  }, []);
+
   return (
     <View className="flex-row items-center justify-between space-x-2 px-4 pb-2">
       <TouchableOpacity onPress={handleMealCreate} className="flex-row items-end">
@@ -125,9 +130,9 @@ export default function FoodTop() {
             contentContainerStyle={{ paddingHorizontal: 15 }}
           >
             {datas.length > 0 ? (
-              datas.map((item) => {
+              datas.map((item, index) => {
                 return (
-                  <View className="flex-row justify-left mt-14 w-full">
+                  <View key={index} className="flex-row justify-left mt-14 w-full">
                     <View
                       style={{ shadowColor: COLORS.grey, shadowRadius: 7 }}
                       className="mr-6 bg-white rounded-3xl shadow-lg w-full"
