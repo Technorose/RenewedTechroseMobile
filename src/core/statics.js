@@ -2,4 +2,4 @@ export const securityTokenKey = "#xFmZ%84GVU@3Nd^ea#R4i&ZpKFrmhBppZD$edsdr*JZfF&
 
 export const googleImageUrl = "https://storage.googleapis.com/techrose-storage/"
 
-export const apiUrl = "http://techrosediabetesapi.somee.com/"
+export const apiUrl = "https://techrosediabetesapi.somee.com/"
