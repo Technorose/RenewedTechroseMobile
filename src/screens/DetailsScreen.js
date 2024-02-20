@@ -192,7 +192,7 @@ export default function DetailsScreen() {
               })}
             </View>
             <ProgressChart
-              data={[data.Calories / 1000, data.Carbohydrate/100, (data.Sugar/1000)]}
+              data={[data.Calories / 10000, data.Carbohydrate/1000, (data.Sugar/1000)]}
               width={screenWidth - 32}
               height={220}
               radius={24}
