@@ -23,7 +23,6 @@
   </p>
 </p>
 
-![Contributors](https://img.shields.io/github/contributors/TECHROSE/RenewedTechroseMobile?color=dark-green) 
 
 ## Table Of Contents
 
