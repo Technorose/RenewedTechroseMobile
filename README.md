@@ -1,7 +1,7 @@
 <br/>
 <p align="center">
   <a href="https://github.com/TECHROSE/RenewedTechroseMobile">
-    <img src="assets/techrose_banner.png" alt="Logo" width="80" height="80">
+    <img src="assets/techrose_banner.png" alt="Logo" width="100" height="100">
   </a>
 
   <h3 align="center">TECHROSE DİABETES APP</h3>
@@ -15,8 +15,7 @@
 
 
 
-    <br/>
-    <br/>
+   
   </p>
 </p>
 
