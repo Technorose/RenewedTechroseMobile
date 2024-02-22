@@ -11,7 +11,7 @@
   <h3 align="center">TECHROSE DİABETES APP</h3>
 
   <p align="center">
-    "Diyabetinizi Yönetin, Hayatınızı Şekillendirin: Güç Sizde!"
+    "Manage Your Diabetes, Shape Your Life: You Have the Power!"
 
 
 
