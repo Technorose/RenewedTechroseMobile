@@ -33,6 +33,10 @@
 
 ## About The Project
 
+![Screen Shot](https://github.com/Technorose/Readme.github/blob/main/AdvertismentImage/Advertisment1.png)
+![Screen Shot](https://github.com/Technorose/Readme.github/blob/main/AdvertismentImage/Advertisment2.png)
+![Screen Shot](https://github.com/Technorose/Readme.github/blob/main/AdvertismentImage/Advertisment3.png)
+
 Managing diabetes is now easier and more effective than ever! The Techrose Diabetes Monitoring App eliminates the challenges associated with diabetes by intelligently tracking your health data. Dealing with traditional blood sugar measurements is a thing of the past. Now, you have a powerful solution to better manage your diabetes.
 
 Why Choose Techrose?
