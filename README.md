@@ -68,7 +68,7 @@ React Native Chart Kit: React Native Chart Kit is a library used to visualize da
 
 React Native Tailwind: React Native Tailwind, is an adapted version of Tailwind CSS, a CSS framework used in React Native applications.
 
-* []()
+
 
 ## Getting Started
 
