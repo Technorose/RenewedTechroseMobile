@@ -1,8 +1,12 @@
-<br/>
+<img src="assets/techrose_banner.png" width="100%" height="100%" />
+
+[Demo]: https://www.youtube.com/watch?v=z5Ad3D7VYT4
+[Linkedin]: https://www.linkedin.com/company/techrose/
+
 <p align="center">
-  <a href="https://github.com/TECHROSE/RenewedTechroseMobile">
-    <img src="assets/techrose_banner.png" alt="Logo" width="100" height="100">
-  </a>
+
+[Demo] 
+[Linkedin]
 
   <h3 align="center">TECHROSE DİABETES APP</h3>
 
