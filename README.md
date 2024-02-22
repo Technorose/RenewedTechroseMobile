@@ -121,5 +121,8 @@ Before running the app on an Android device or emulator, make sure you have Andr
 ## Authors
 
 * **Furkan Nadir Ağlar** - *Frontend Developer* - [Furkan Nadir Ağlar](https://github.com/FurkanNadirAglar) - *Frontend Developer*
+* **Mehmet Solak ** - *Full Stack Developer* - [Mehmet Solak ](https://github.com/knetic0) - *Full Stack Developer*
+* **Doğukan Aksoy ** - *Full Stack Developer * - [Doğukan Aksoy ](https://github.com/Dredogu) - *Full Stack Developer *
+* **Zülfücan Karakuş ** - *Frontend Developer * - [Zülfücan Karakuş ](https://github.com/zulfucankarakus) - *Frontend Developer*
 
 
