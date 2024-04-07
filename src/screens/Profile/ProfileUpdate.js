@@ -9,23 +9,40 @@ import * as ImagePicker from 'expo-image-picker';
 import ApiService from "../../service/ApiService"
 import { useDispatch, useSelector } from "react-redux"
 import { updateUser } from "../../../slices/userSlice"
+import Toast from 'react-native-toast-message'
 
 export default function ProfileUpdate() {
     const navigation = useNavigation()
 
     const user = useSelector(state => state.user.user)
     const dispatch = useDispatch()
+    const [updateData, setUpdateData] = useState({
+        ...user
+    });
 
     const handleCredentialsChange = (name, value) => {
-        setUser({...user, [name]: value})
+        setUpdateData({...updateData, [name]: value})
     }
 
     const handleUpdateCredentials = () => {
-        ApiService.postUserUpdate(user)
+        ApiService.postUserUpdate(updateData)
         .then(async (response) => {
             if(response.result.success === true) {
                 await AsyncStorage.setItem("user", JSON.stringify(response.user))
                 dispatch(updateUser(response.user))
+                navigation.goBack();
+                Toast.show({
+                    type: 'success',
+                    text1: 'User Information Updated!',
+                    text2: 'Your information has been updated successfully!',
+                })
+            } else {
+                navigation.goBack();
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error!',
+                    text2: response.result.error_description,
+                })
             }
         })
     }
@@ -41,13 +58,28 @@ export default function ProfileUpdate() {
         ApiService.postProfileImage(formData)
             .then(async (response) => {
                 if(response.result.success === true) {
-                    await AsyncStorage.setItem("user", JSON.stringify(user))
-                    dispatch(updateUser(response.user))
+                    await AsyncStorage.setItem("user", JSON.stringify({...user, image: response.image}))
+                    dispatch(updateUser(JSON.stringify({...user, image: response.image})))
+                    navigation.goBack();
+                    Toast.show({
+                        type: 'success',
+                        text1: 'Image Uploaded!',
+                        text2: 'Your image has been uploaded successfully!',
+                    })
                 } else {
-                    console.log(response)
+                    navigation.goBack();
+                    Toast.show({
+                        type: 'error',
+                        text1: 'Error!',
+                        text2: response.result.error_description,
+                    })
                 }
             }).catch((error) => {
-                console.log(error)
+                Toast.show({
+                    type: 'error',
+                    text1: 'Error!',
+                    text2: 'An error occurred while uploading the image!',
+                })
             })
     };
 
@@ -88,28 +120,28 @@ export default function ProfileUpdate() {
                             <Text className="text-gray-700">First Name</Text>
                             <TextInput
                                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                                value={user.first_name}
+                                value={updateData.first_name}
                                 placeholder='Update First Name'
                                 onChangeText={(value) => handleCredentialsChange('first_name', value)}
                             />
                             <Text className="text-gray-700">Last Name</Text>
                             <TextInput
                                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                                value={user.last_name}
+                                value={updateData.last_name}
                                 placeholder='Update Last Name'
                                 onChangeText={(value) => handleCredentialsChange('last_name', value)}
                             />
                             <Text className="text-gray-700">Email Address</Text>
                             <TextInput
                                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                                value={user.email}
+                                value={updateData.email}
                                 placeholder='Update Email'
                                 onChangeText={(value) => handleCredentialsChange('email', value)}
                             />
                             <Text className="text-gray-700">Phone number</Text>
                             <TextInput
                                 className="p-4 bg-gray-100 text-gray-700 rounded-2xl mb-3"
-                                value={user.phone_number}
+                                value={updateData.phone_number}
                                 placeholder='Update phone number'
                                 onChangeText={(value) => handleCredentialsChange('phone_number', value)}
                             />
