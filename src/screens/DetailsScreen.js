@@ -23,9 +23,9 @@ export default function DetailsScreen() {
     new Date().toISOString().split("T")[0]
   );
   const [data, setData] = useState({
-    Calories: 0,
-    Carbohydrate: 0,
-    Sugar: 0,
+    Calories: 0.0,
+    Carbohydrate: 0.0,
+    Sugar: 0.0,
   });
 
   const user = useSelector(state => state.user.user)
@@ -159,18 +159,18 @@ export default function DetailsScreen() {
           contentContainerStyle={{ paddingHorizontal: 5 }}
         >
           <View className="mr-3">
-            <View className="flex-row justify-between ml-4 mr-4">
+            <View className="flex-row justify-between ml-2 mr-4">
               {Object.entries(data).map((values, index) => {
                 return (
                   <View key={index} className="flex-row justify-center items-center">
-                    <Text className="text-gray-500 text-center font-bold">{values[1] / 10}%{" "}</Text>
-                    <Text className="text-gray-500 text-center">{values[0]}</Text>
+                    <Text className="text-gray-500 text-center font-bold">{values[1]}gr.{" "}</Text>
+                    <Text className="text-gray-500 text-center mr-1">{values[0]}</Text>
                   </View>
                 );
               })}
             </View>
             <ProgressChart
-              data={[data.Calories / 10000, data.Carbohydrate / 1000, (data.Sugar/1000)]}
+              data={[data.Calories, data.Carbohydrate, data.Sugar]}
               width={screenWidth - 32}
               height={220}
               radius={24}
