@@ -29,6 +29,7 @@ export default function ProfileUpdate() {
         .then(async (response) => {
             if(response.result.success === true) {
                 await AsyncStorage.setItem("user", JSON.stringify(response.user))
+                await AsyncStorage.setItem("token", response.token)
                 dispatch(updateUser(response.user))
                 navigation.goBack();
                 Toast.show({
