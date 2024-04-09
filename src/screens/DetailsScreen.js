@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import { Calendar } from "react-native-calendars";
 import COLORS from "../core/colors";
-import { useEffect, useRef, useState  } from "react";
+import { useCallback, useRef, useState  } from "react";
 import {
   LineChart,
   ProgressChart,
@@ -17,6 +17,8 @@ import BottomSheet from "../components/common/BottomSheet";
 import { googleImageUrl } from "../core/statics";
 import {  useSelector } from "react-redux";
 import ApiService from "../service/ApiService";
+import { useFocusEffect } from "@react-navigation/native";
+import Toast from 'react-native-toast-message'
 
 export default function DetailsScreen() {
   const [selected, setSelected] = useState(
@@ -76,18 +78,31 @@ export default function DetailsScreen() {
     },
   };
 
-  useEffect(() => {
-    ApiService.getUserMealsDetails(selected)
-      .then((response) => {
-        if (response.result.success === true) {
-          setData({
-            Calories: response.total_calories,
-            Carbohydrate: response.total_carbohydrate,
-            Sugar: response.total_sugar,
-          });
-        }
-      })
-  }, [selected])
+  useFocusEffect(
+    useCallback(() => {
+      ApiService.getUserMealsDetails(selected)
+        .then((response) => {
+          if (response.result.success === true) {
+            setData({
+              Calories: response.total_calories,
+              Carbohydrate: response.total_carbohydrate,
+              Sugar: response.total_sugar,
+            });
+          } else {
+            setData({
+              Calories: 0.0,
+              Carbohydrate: 0.0,
+              Sugar: 0.0,
+            })
+            Toast.show({
+              type: 'info',
+              text1: 'Info!',
+              text2: response.result.error_description,
+            })
+          }
+        })
+    }, [selected])
+  );
 
   const screenWidth = Dimensions.get("window").width;
   const screenHeight = Dimensions.get("window").height;
