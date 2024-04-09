@@ -41,7 +41,7 @@ const ProfileScreen = () => {
           </View>
         </View>
         <View style={styles.personelInfos}>
-            <Image style={styles.avatar} key={googleImageUrl+user.image} src={googleImageUrl+user.image} />
+            <Image style={styles.avatar} key={googleImageUrl+user.image} source={{ uri: googleImageUrl+user.image + `?time=${new Date()}` }} />
           <View style={styles.personelText}>
             <Text style={styles.userName}>{user.first_name + " " + user.last_name}</Text>
             <View style={styles.memberInfo}>

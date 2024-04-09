@@ -106,9 +106,12 @@ export default function ProfileUpdate() {
                     </TouchableOpacity>
                 </View>
                 <TouchableOpacity onPress={() => selectImage()} className="flex-row justify-center mt-3">
-                    <Image src={googleImageUrl+user.image} 
+                    <Image 
+                        key={googleImageUrl+user.image} 
+                        source={{ uri: googleImageUrl+user.image + `?time=${new Date()}` }} 
                         className="rounded-full"
-                        style={{width: 128, height: 128}} />
+                        style={{width: 128, height: 128}} 
+                    />
                     <CameraIcon size="20" color="black" />
                 </TouchableOpacity>
               </SafeAreaView>

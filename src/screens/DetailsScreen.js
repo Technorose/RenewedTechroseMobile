@@ -117,7 +117,7 @@ export default function DetailsScreen() {
         style={{ shadowColor: COLORS.grey, shadowRadius: 7 }}
         className="flex-row bg-white rounded-3xl shadow-lg p-3"
       >
-        <Image className="rounded-full w-24 h-24 items-center justify-center" src={googleImageUrl+user.image} />
+        <Image className="rounded-full w-24 h-24 items-center justify-center" key={googleImageUrl+user.image} source={{ uri: googleImageUrl+user.image + `?time=${new Date()}` }} />
 
         <View className="px-3.5 pb-6 space-y-3 p-3">
           <View className="flex-row justify-between">
