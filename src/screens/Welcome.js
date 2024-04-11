@@ -1,9 +1,13 @@
-import { View, Text, TouchableOpacity, Image, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, Image, Dimensions, Pressable } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import COLORS from "../core/colors";
 import { useNavigation } from "@react-navigation/native";
 import { themeColors } from "../../theme";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const { width, height } = Dimensions.get("window");
 
@@ -13,27 +17,26 @@ export default function Welcome() {
   return (
     <LinearGradient style={{ flex: 1 }} colors={[COLORS.secondary, COLORS.primary]}>
       <View style={{ flex: 1 }}>
-        <View style={{ alignItems: "center", marginTop: height * 0.1 }}>
+        <View className="items-center mt-16">
           <Image
             source={require("../../assets/logo.png")}
+            resizeMode="contain"
             style={{
-              height: width * 0.5,
-              width: width * 0.5,
-              borderRadius: 20,
+              height: hp(30),
             }}
           />
         </View>
-        <View style={{ paddingHorizontal: width * 0.05, marginTop: height * 0.1 }}>
-          <Text style={{ fontSize: width * 0.1, fontWeight: "bold", color: COLORS.white }}>
+        <View className="px-2 mt-16">
+          <Text style={{ fontSize: hp(4.5), fontWeight: "bold", color: COLORS.white }}>
             Let's Get
           </Text>
-          <Text style={{ fontSize: width * 0.092, fontWeight: "bold", color: COLORS.white }}>
+          <Text style={{ fontSize: hp(4.5), fontWeight: "bold", color: COLORS.white }}>
             Started
           </Text>
-          <View style={{ marginVertical: height * 0.02 }}>
+          <View className="my-4">
             <Text
               style={{
-                fontSize: width * 0.04,
+                fontSize: hp(2),
                 color: COLORS.white,
                 marginBottom: height * 0.01,
                 fontWeight: "400",
@@ -41,11 +44,11 @@ export default function Welcome() {
             >
               Welcome to Techrose Diabetes Application!
             </Text>
-            <Text style={{ fontSize: width * 0.04, color: COLORS.white, fontWeight: "400" }}>
+            <Text style={{ fontSize: hp(2), color: COLORS.white, fontWeight: "400" }}>
               Let's get started and step into living a healthy life together!
             </Text>
           </View>
-          <TouchableOpacity
+          <Pressable
             onPress={() => navigation.navigate("Login")}
             style={{
               backgroundColor: themeColors.bg,
@@ -56,17 +59,19 @@ export default function Welcome() {
             }}
           >
             <Text style={{ fontSize: width * 0.05, fontWeight: "bold", color: COLORS.primary }}>
-              Sign Up
+              Sign In
             </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Register")}
-            style={{ marginTop: height * 0.03 }}
-          >
-            <Text style={{ fontSize: width * 0.04, color: COLORS.white, fontWeight: "500" }}>
+          </Pressable>
+          <View className="flex-row justify-center gap-x-2 mt-7">
+            <Text style={{ fontSize: hp(1.8) }} className="text-white font-semibold">
               Don't have an account?
             </Text>
-          </TouchableOpacity>
+            <Pressable onPress={() => navigation.navigate("Register")}>
+              <Text style={{ fontSize: hp(1.8) }} className="text-yellow-500 font-semibold">
+                Sign Up
+              </Text>
+            </Pressable>
+          </View>
         </View>
       </View>
     </LinearGradient>
