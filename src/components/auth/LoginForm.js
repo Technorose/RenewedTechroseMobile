@@ -43,58 +43,58 @@ export default function LoginForm() {
   }
 
   const Login = () => {
-    if(formData.user_name === ''
-      || formData.user_name === null
-      || formData.user_name === undefined
-    ) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error!',
-        text2: 'Email is required',
-      })
-      return
-    }
+    // if(formData.user_name === ''
+    //   || formData.user_name === null
+    //   || formData.user_name === undefined
+    // ) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Error!',
+    //     text2: 'Email is required',
+    //   })
+    //   return
+    // }
 
-    if(formData.password === ''
-      || formData.password === null
-      || formData.password === undefined
-    ) {
-      Toast.show({
-        type: 'error',
-        text1: 'Error!',
-        text2: 'Password is required',
-      })
-      return
-    }
+    // if(formData.password === ''
+    //   || formData.password === null
+    //   || formData.password === undefined
+    // ) {
+    //   Toast.show({
+    //     type: 'error',
+    //     text1: 'Error!',
+    //     text2: 'Password is required',
+    //   })
+    //   return
+    // }
+    navigation.navigate("Main")
+    // ApiService.login(formData)
+    //   .then(response => {
+    //     console.log(response)
+    //     if(response.result.success === true) {
+    //       setResultModal(true)
+    //       // Toast.show({
+    //       //   type: 'success',
+    //       //   text1: response.user.first_name + ' ' + response.user.last_name + 'Welcome to Techrose Diabetes Application!',
+    //       // })
+    //       AsyncStorage.setItem('user', JSON.stringify(response.user))
+    //       AsyncStorage.setItem('token', response.token)
+    //       dispatch(addUser(response.user))
 
-    ApiService.login(formData)
-      .then(response => {
-        console.log(response)
-        if(response.result.success === true) {
-          setResultModal(true)
-          // Toast.show({
-          //   type: 'success',
-          //   text1: response.user.first_name + ' ' + response.user.last_name + 'Welcome to Techrose Diabetes Application!',
-          // })
-          AsyncStorage.setItem('user', JSON.stringify(response.user))
-          AsyncStorage.setItem('token', response.token)
-          dispatch(addUser(response.user))
-
-          setTimeout(() => {
-            setResultModal(false)
-            navigation.navigate("Main")
-          }, 1500)
-        } else {
-          Toast.show({
-            type: 'error',
-            text1: 'Error!',
-            text2: response.result.error_description,
-          })
-        }
-      })
-      .catch(error => {
-        console.log(error)
-      })
+    //       setTimeout(() => {
+    //         setResultModal(false)
+    //         navigation.navigate("Main")
+    //       }, 1500)
+    //     } else {
+    //       Toast.show({
+    //         type: 'error',
+    //         text1: 'Error!',
+    //         text2: response.result.error_description,
+    //       })
+    //     }
+    //   })
+    //   .catch(error => {
+    //     console.log(error)
+    //   })
   }
 
   return (
